@@ -1,0 +1,78 @@
+body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+h2 {
+  margin: 4px 0;
+}
+
+.hidden {
+  display: none;
+}
+
+#interface {
+  width: 800px;
+  position: relative;
+}
+
+#results {
+  border: 1px solid;
+  border-color: #E2E2E2;
+  margin-top: 5px;
+  overflow-y: auto;
+  height: 208px;
+}
+
+#tracks ul {
+  padding-left: 0px;  
+}
+
+#results ul {
+  margin-top: 5px;
+  padding-left: 5px;
+}
+
+#results ul li, 
+#tracks ul li {
+  list-style: none;
+  padding: 1px 0;
+}
+
+#tracks ul li a {
+  position: absolute;
+  margin-top: -5px;
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+#results ul li:hover {
+  background-color: aliceblue;
+}
+
+#query-txt {
+  width: 795px;
+  padding: 8px 0px 8px 5px;
+  border-radius: 2px;
+  border: 1px solid #E2E2E2;
+  font-size: medium;
+}
+
+button {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+button.login {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+button.logout {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  position: absolute;
+  right: 0px;
+}
