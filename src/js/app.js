@@ -31,10 +31,14 @@ App.prototype.initApp = function() {
 }
 
 App.prototype.login = function() {
+  document.getElementById('login-btn').hide();
+  document.getElementById('loading-msg').show();
   DZ.login((function(response) {
     if (response.authResponse) {
       DZ.api('/user/me', (function(response) {
         if (response.error) {
+          document.getElementById('login-btn').show();
+          document.getElementById('loading-msg').hide();
           return;
         }
         if ( ! this.playerInitialized) {
@@ -43,7 +47,7 @@ App.prototype.login = function() {
               container: 'player',
               width : 800,
               height : 100,
-              onload : (function() {
+              onload : (function() {                
                 this.playerInitialized = true;
                 this.afterLoggedIn(response.id);
               }).bind(this)
@@ -53,11 +57,15 @@ App.prototype.login = function() {
           this.afterLoggedIn(response.id);
         }
       }).bind(this));
+    } else {
+      document.getElementById('login-btn').show();
+      document.getElementById('loading-msg').hide();
     }
   }).bind(this), {perms: 'basic_access,email,manage_library,delete_library'});
 }
 
 App.prototype.afterLoggedIn = function(userId) {
+  document.getElementById('loading-msg').hide();
   document.getElementById('logout-btn').show();
   document.getElementById('login-btn').hide();
   this.userId = userId;
