@@ -12,6 +12,12 @@ Playlist.prototype.init = function() {
     }
     timeoutId = setTimeout(this.Search.bind(this), 100);
   }.bind(this)));
+  document.getElementById('refresh-btn').addEventListener('click', this.refresh.bind(this));
+}
+
+Playlist.prototype.refresh = function() {
+  this.loadPlaylist();
+  document.getElementById('refresh-btn').hide();
 }
 
 Playlist.prototype.show = function() {
@@ -37,13 +43,12 @@ Playlist.prototype.show = function() {
 }
 
 Playlist.prototype.initPlaylist = function(playlistId) {
-  this.playlistId = playlistId;
-  this.reloadPlaylist();
-  this.showTracks();
+  this.playlistId = playlistId;  
+  this.showTracks(true);
 }
 
-Playlist.prototype.reloadPlaylist = function() {  
-  DZ.player.playPlaylist(this.playlistId, false);
+Playlist.prototype.loadPlaylist = function() {  
+  DZ.player.playPlaylist(this.playlistId);
 }
 
 Playlist.prototype.onRemoveTrack = function(e) {  
@@ -52,16 +57,19 @@ Playlist.prototype.onRemoveTrack = function(e) {
   var trackId = li.id;
 
   li.parentNode.removeChild(li);
-  a.removeEventListener('click', this.onRemoveTrack.bind(this));
   DZ.api('playlist/' + this.playlistId + '/tracks', 'DELETE', { songs: trackId }, (function(response) {
     if (response.error) {
       throw response.error;
     }
-    this.reloadPlaylist();
+    if (document.querySelectorAll('#tracks ul li').length) {
+      document.getElementById('refresh-btn').show();
+    }    
   }).bind(this));
 }
 
-Playlist.prototype.showTracks = function() {
+Playlist.prototype.showTracks = function(loadPlaylist) {
+  loadPlaylist = loadPlaylist || false;
+
   DZ.api('playlist/' + this.playlistId + '/tracks', 'GET', (function(response) {
     if (response.error) {
       throw response.error;
@@ -76,13 +84,18 @@ Playlist.prototype.showTracks = function() {
     document.querySelectorAll('#tracks ul li a').forEach(function(elt) {
       elt.addEventListener('click', this.onRemoveTrack.bind(this));      
     }, this);
+    if (loadPlaylist) {
+      this.loadPlaylist();
+    } else {
+      document.getElementById('refresh-btn').show();
+    }
   }).bind(this));
 }
 
-Playlist.prototype.hide = function() {
+Playlist.prototype.hide = function(callback) {
   DZ.player.pause();
   DZ.api('playlist/' + this.playlistId, 'DELETE', function(response) {
-
+    callback();
   });
   document.getElementById('playlist').hide();
   document.getElementById('player').hide();  
@@ -109,8 +122,7 @@ Playlist.prototype.Search = function() {
       document.querySelectorAll('#results ul li').forEach(function(elt) {
         elt.addEventListener('click', (function(e) {
           DZ.api('playlist/' + this.playlistId + '/tracks', 'POST', { songs: e.target.id }, (function(response) {
-            this.showTracks();
-            this.reloadPlaylist();
+            this.showTracks();            
           }).bind(this));
           document.getElementById('results').hide();
           document.getElementById('query-txt').value = '';

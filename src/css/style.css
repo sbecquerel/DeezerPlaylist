@@ -63,16 +63,19 @@ button {
   padding: 8px 10px;
 }
 
-button.login {
+button.success {
   color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
 
-button.logout {
+button.danger {
   color: #fff;
   background-color: #d9534f;
   border-color: #d43f3a;
+}
+
+div.controls {
   position: absolute;
   right: 0px;
 }

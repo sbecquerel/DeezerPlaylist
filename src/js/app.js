@@ -32,7 +32,7 @@ App.prototype.initDZ = function() {
 
 App.prototype.initApp = function() {
   document.getElementById('login-btn').addEventListener('click', this.login.bind(this));
-  document.getElementById('logout-btn').addEventListener('click', this.logout.bind(this));
+  document.getElementById('logout-btn').addEventListener('click', this.logout.bind(this));  
   this.playlist.init();
 }
 
@@ -51,8 +51,9 @@ App.prototype.login = function() {
 
 App.prototype.logout = function() {
   this.userId = null;
-  this.playlist.hide();
-  DZ.logout();
+  this.playlist.hide(function() {
+    DZ.logout();
+  });  
   document.getElementById('logout-btn').hide();
   document.getElementById('login-btn').show();
 }
