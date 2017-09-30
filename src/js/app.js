@@ -1,6 +1,7 @@
 App = function() {
   this.userId = null;
   this.playlist = new Playlist();  
+  this.playerInitialized = false;
 }
 
 App.prototype.init = function() {
@@ -13,15 +14,8 @@ App.prototype.initDZ = function() {
     DZ.init({
       appId  : '254142',
       channelUrl : 'http://localhost/channel.php',
-      player: {
-        container: 'player',
-        width : 800,
-        height : 100,
-        onload : function() {
-          document.getElementById('interface').show();
-        }
-      }
     });
+    document.getElementById('interface').show();
   }).bind(this);
     
   var e = document.createElement('script');
@@ -43,13 +37,31 @@ App.prototype.login = function() {
         if (response.error) {
           return;
         }
-        document.getElementById('logout-btn').show();
-        document.getElementById('login-btn').hide();
-        this.userId = response.id;
-        this.playlist.show();
+        if ( ! this.playerInitialized) {
+          DZ.init({
+            player: {
+              container: 'player',
+              width : 800,
+              height : 100,
+              onload : (function() {
+                this.playerInitialized = true;
+                this.afterLoggedIn(response.id);
+              }).bind(this)
+            }
+          });
+        } else {
+          this.afterLoggedIn(response.id);
+        }
       }).bind(this));
     }
   }).bind(this), {perms: 'basic_access,email,manage_library,delete_library'});
+}
+
+App.prototype.afterLoggedIn = function(userId) {
+  document.getElementById('logout-btn').show();
+  document.getElementById('login-btn').hide();
+  this.userId = userId;
+  this.playlist.show();
 }
 
 App.prototype.logout = function() {
