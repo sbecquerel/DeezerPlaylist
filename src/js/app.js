@@ -39,9 +39,12 @@ App.prototype.initApp = function() {
 App.prototype.login = function() {
   DZ.login((function(response) {
     if (response.authResponse) {
-      document.getElementById('logout-btn').show();
-      document.getElementById('login-btn').hide();      
       DZ.api('/user/me', (function(response) {
+        if (response.error) {
+          return;
+        }
+        document.getElementById('logout-btn').show();
+        document.getElementById('login-btn').hide();
         this.userId = response.id;
         this.playlist.show();
       }).bind(this));
