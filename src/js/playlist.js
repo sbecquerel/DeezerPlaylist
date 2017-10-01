@@ -80,7 +80,6 @@ Playlist.prototype.showTracks = function(loadPlaylist) {
       throw response.error;
     }
     document.getElementById('playlist').show();
-    document.getElementById('player').show();
     document.querySelector('#tracks ul').innerHTML = response.data      
     .map(function(track) {
       return '<li id="' + track.id + '">' + track.title + ' <a href="#" class="remove">x</a></li>';
@@ -107,7 +106,6 @@ Playlist.prototype.hide = function(callback) {
     callback();
   });  
   document.getElementById('playlist').hide();
-  document.getElementById('player').hide();  
   document.getElementById('refresh-btn').hide();
 }
 

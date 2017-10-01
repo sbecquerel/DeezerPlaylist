@@ -68,6 +68,7 @@ App.prototype.login = function() {
 
 App.prototype.afterLoggedIn = function(userId) {
   document.getElementById('loading-msg').hide();
+  document.getElementById('player').show();
   document.getElementById('logout-btn').show();
   document.getElementById('login-btn').hide();
   this.userId = userId;
@@ -85,4 +86,5 @@ App.prototype.logout = function() {
   });  
   document.getElementById('logout-btn').hide();
   document.getElementById('login-btn').show();
+  document.getElementById('player').hide();  
 }
