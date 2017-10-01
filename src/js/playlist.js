@@ -7,6 +7,7 @@ Playlist.prototype.init = function() {
   var timeoutId;
 
   document.querySelector('#playlist h2').innerHTML = 'Playlist "' + this.playlistTitle + '" tracks';
+  // Use setTimeout to prevent multiple calls to API
   document.getElementById('query-txt').addEventListener('keyup', (function() {  
     if (timeoutId !== undefined) {
       clearTimeout(timeoutId);
@@ -27,13 +28,14 @@ Playlist.prototype.show = function() {
       throw response.error;
     }
     var playLists = response.data;
+    // Check if playlist exists, and use it if found
     for (var i in playLists) {
       if (playLists[i].title === this.playlistTitle) {
         this.initPlaylist(playLists[i].id);
         return;
       }
     }
-    // Create playlist
+    // Create playlist if not found
     DZ.api('user/me/playlists', 'POST', {title : this.playlistTitle}, (function(response) {
       if (response.error) {
         throw response.error;
@@ -63,6 +65,7 @@ Playlist.prototype.onRemoveTrack = function(e) {
       throw response.error;
     }
     if (document.querySelectorAll('#tracks ul li').length) {
+      // Show refresh button if there is at least one track
       document.getElementById('refresh-btn').show();
     }    
   }).bind(this));
@@ -71,6 +74,7 @@ Playlist.prototype.onRemoveTrack = function(e) {
 Playlist.prototype.showTracks = function(loadPlaylist) {
   loadPlaylist = loadPlaylist || false;
 
+  // Get playlist tracks from API
   DZ.api('playlist/' + this.playlistId + '/tracks', 'GET', (function(response) {
     if (response.error) {
       throw response.error;
@@ -85,8 +89,10 @@ Playlist.prototype.showTracks = function(loadPlaylist) {
     document.querySelectorAll('#tracks ul li a').forEach(function(elt) {
       elt.addEventListener('click', this.onRemoveTrack.bind(this));      
     }, this);
+    // If first call (initializaion), play the playlist
     if (loadPlaylist) {
       this.loadPlaylist();
+    // Else show the refresh button to refresh playlist and doesn't interrupt current playing
     } else {
       document.getElementById('refresh-btn').show();
     }
@@ -95,6 +101,8 @@ Playlist.prototype.showTracks = function(loadPlaylist) {
 
 Playlist.prototype.hide = function(callback) {
   DZ.player.pause();
+  // Delete temporary playlist
+  // The callback is used to disconnect the user after deletion
   DZ.api('playlist/' + this.playlistId, 'DELETE', function(response) {
     callback();
   });
