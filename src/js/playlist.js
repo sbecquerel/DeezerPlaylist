@@ -105,9 +105,10 @@ Playlist.prototype.hide = function(callback) {
   // The callback is used to disconnect the user after deletion
   DZ.api('playlist/' + this.playlistId, 'DELETE', function(response) {
     callback();
-  });
+  });  
   document.getElementById('playlist').hide();
   document.getElementById('player').hide();  
+  document.getElementById('refresh-btn').hide();
 }
 
 Playlist.prototype.Search = function() {
