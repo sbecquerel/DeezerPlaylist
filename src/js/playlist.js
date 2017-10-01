@@ -1,11 +1,12 @@
 Playlist = function() {
-  this.playlistTitle = 'TEST_340304';
+  this.playlistTitle = 'Test API';
   this.playlistId = null;
 }
 
 Playlist.prototype.init = function() {  
   var timeoutId;
 
+  document.querySelector('#playlist h2').innerHTML = 'Playlist "' + this.playlistTitle + '" tracks';
   document.getElementById('query-txt').addEventListener('keyup', (function() {  
     if (timeoutId !== undefined) {
       clearTimeout(timeoutId);
