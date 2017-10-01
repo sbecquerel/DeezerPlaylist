@@ -19,3 +19,11 @@ The system will automatically create a temporary playlist named **Test API**.
 * To remove a track, click on the cross next to the track name
 * After adding or removing a track, click on the *refresh* button to refresh the playlist in the player
 * Click on *logout* button to disconnect the user, and delete the temporary playlist
+
+## Compatibilty
+| Browser   | Compatibility | Comment                                         |
+| --------- | ------------- | ----------------------------------------------- | 
+| Chrome    | Ok            | **Recommended browser**                         |
+| Safari    | Ok            | Update code to load player after authentication |
+| Firefox   | Ko            | Can't establish connection with server          |
+| Edge      | Ko            | Player onload event never fired                 |
