@@ -7,7 +7,7 @@ Open a browser and enter url: http://localhost
 
 To stop the container: `$ ./stop.sh`
 
-## 
+## Interface
 Click on the *Login* button and enter your login/password in the popup window.  
 ![Login](https://raw.githubusercontent.com/sbecquerel/DeezerPlaylist/master/img/login.png)
 
